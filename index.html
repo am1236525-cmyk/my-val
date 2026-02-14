@@ -43,7 +43,7 @@
       <path d="M190 144 C186 144 182 148 182 152 C182 160 190 164 190 170 C190 164 198 160 198 152 C198 148 194 144 190 144Z" fill="#ff7aa2"/>
     </svg>
 
-    <h1>Queen Mayora will you be my valentine?</h1>
+    <h1>Mayar will you be my valentine?</h1>
     <section class="button-zone" id="zone">
       <button id="yesBtn">Yes</button>
       <button id="noBtn">No</button>
@@ -86,7 +86,9 @@
     });
     
     yesBtn.addEventListener("click", () => { 
-      document.body.style.zoom = "80%";
+     document.body.style.transition = "transform 0.5s ease"; // حركة ناعمة للتصغير
+      document.body.style.transform = "scale(0.8)";
+      document.body.style.transformOrigin = "top center";
       zone.style.display = "none"; hint.style.display = "none"; result.style.display = "block";
       celebrationSound.play();
       fullScreenConfetti();
@@ -103,3 +105,4 @@
 </body>
 
 </html>
+
