@@ -85,7 +85,8 @@
       if (Math.hypot((b.left + b.width/2) - e.clientX, (b.top + b.height/2) - e.clientY) < 140) moveNo(e.clientX, e.clientY);
     });
     
-    yesBtn.addEventListener("click", () => {
+    yesBtn.addEventListener("click", () => { 
+      document.body.style.zoom = "80%";
       zone.style.display = "none"; hint.style.display = "none"; result.style.display = "block";
       celebrationSound.play();
       fullScreenConfetti();
@@ -100,4 +101,5 @@
     });
   </script>
 </body>
+
 </html>
