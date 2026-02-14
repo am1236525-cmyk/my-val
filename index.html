@@ -71,18 +71,41 @@
     function fullScreenConfetti() { const end = Date.now() + 2000; (function frame() { confettiInstance({ particleCount: 15, spread: 90, startVelocity: 45, origin: { x: Math.random(), y: Math.random() * 0.3 } }); if (Date.now() < end) requestAnimationFrame(frame); })(); }
     
     let yesScale = 1;
-    function moveNo(px, py) {
-      const z = zone.getBoundingClientRect(), b = noBtn.getBoundingClientRect();
-      let dx = (b.left + b.width / 2) - px, dy = (b.top + b.height / 2) - py, mag = Math.hypot(dx, dy) || 1;
-      noBtn.style.left = Math.max(0, Math.min(z.width - b.width, (b.left - z.left) + (dx / mag) * 150)) + "px";
-      noBtn.style.top = Math.max(0, Math.min(z.height - b.height, (b.top - z.top) + (dy / mag) * 150)) + "px";
-      yesScale = Math.min(2.2, yesScale + 0.1);
+    /* ---------- تحسين هروب زرار NO والزووم ---------- */
+    function moveNo() {
+      const z = zone.getBoundingClientRect();
+      const b = noBtn.getBoundingClientRect();
+
+      // حساب مكان عشوائي تماماً داخل حدود منطقة الأزرار
+      const maxX = z.width - b.width;
+      const maxY = z.height - b.height;
+
+      const newLeft = Math.random() * maxX;
+      const newTop = Math.random() * maxY;
+
+      noBtn.style.left = newLeft + "px";
+      noBtn.style.top = newTop + "px";
+      noBtn.style.transform = "none";
+
+      // زرار Yes يكبر كل ما No يهرب
+      yesScale = Math.min(2.5, yesScale + 0.15); 
       yesBtn.style.transform = `translateY(-50%) scale(${yesScale})`;
     }
-    
+
+    // الهروب عند اللمس أو اقتراب الماوس
     zone.addEventListener("pointermove", e => {
       const b = noBtn.getBoundingClientRect();
-      if (Math.hypot((b.left + b.width/2) - e.clientX, (b.top + b.height/2) - e.clientY) < 140) moveNo(e.clientX, e.clientY);
+      const distance = Math.hypot(
+        (b.left + b.width / 2) - e.clientX,
+        (b.top + b.height / 2) - e.clientY
+      );
+      if (distance < 90) moveNo(); // زوّدنا الحساسية لـ 90 عشان يهرب أسرع
+    });
+
+    // سطر إضافي للموبايل عشان أول ما تلمسه يطير
+    noBtn.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      moveNo();
     });
     
     yesBtn.addEventListener("click", () => { 
@@ -105,4 +128,5 @@
 </body>
 
 </html>
+
 
